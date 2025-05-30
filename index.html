@@ -1,21 +1,195 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Maths Teacher</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- CSS styles are included directly here -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Removed default font-family here to apply specific fonts below */
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: rgb(27, 33, 39);
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            padding-bottom: 50px;
+            /* Add padding for the footer */
+            font-family: sans-serif; /* Default fallback font for the body */
+        }
+
+        h1 {
+            font-size: 4vmax;
+            background: linear-gradient(to right, white, rgb(9, 192, 216), rgb(215, 12, 94));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /* Keep h1 font */
+        }
+
+        .upload-image {
+            max-width: 600px;
+            width: 90%;
+            height: 300px;
+            background-color: rgb(66, 76, 86);
+            border-radius: 50px;
+            box-shadow: 2px 2px 10px black;
+            display: flex;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-direction: column;
+        }
+
+        .inner-upload-image {
+            width: 100%;
+            height: 80%;
+            background-color: rgb(21, 26, 32);
+            border-radius: 50px;
+            box-shadow: 2px 2px 10px black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /* Keep inner upload font */
+        }
+
+        .inner-upload-image:hover {
+            box-shadow: inset 2px 2px 10px black;
+            background-color: rgb(42, 51, 62);
+        }
+
+        button {
+            background-color: black;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /* Keep button font */
+        }
+
+        #image {
+            width: 100%;
+            height: 100%;
+            display: none;
+            border-radius: 50px;
+            object-fit: contain;
+            /* Added to prevent image distortion */
+        }
+
+        .output {
+            width: 90%;
+            max-width: 80%;
+            background-color: rgb(2, 3, 3);
+            color: white;
+            box-shadow: 2px 2px 10px black;
+            border-radius: 20px;
+            display: none;
+            padding: 20px;
+            font-size: 20px;
+            overflow: auto;
+            white-space: pre-wrap;
+            /* Added for proper text wrapping in pre */
+            word-wrap: break-word;
+            /* Added for proper text wrapping in pre */
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /* Keep output font */
+        }
+
+        #text {
+            width: 100%;
+            height: 100%;
+        }
+
+        #loading {
+            margin-top: 30px;
+            filter: drop-shadow(2px 2px 10px black);
+            display: none;
+        }
+
+        /* Footer styles */
+        .footer {
+            margin-top: auto;
+            /* Pushes the footer to the bottom */
+            font-size: 2.5vmax;
+            /* Adjust size as needed */
+            color: white;
+            /* Default color - though text-fill-color overrides this */
+            text-align: center;
+            display: flex;
+            /* Use flex to align spans */
+            align-items: center;
+            justify-content: center;
+            /* Center the footer content */
+            gap: 5px;
+            /* Space between parts */
+            width: 100%;
+            /* Ensure footer spans width */
+        }
+
+        /* Apply gradient to text spans */
+        .footer span:not(.heart) {
+             background: linear-gradient(to right, white, rgb(9, 192, 216), rgb(215, 12, 94));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer .heart {
+            background: none;
+            /* Override gradient */
+            -webkit-text-fill-color: red;
+            /* Set heart color to red */
+            color: red;
+            /* Fallback for browsers */
+            font-size: 1.2em; /* Make heart slightly larger maybe */
+            line-height: 1; /* Align heart better vertically */
+        }
+
+        /* Apply specific fonts and bold */
+        /* NOTE: These fonts might not be available. */
+        /* If not available, the browser will use the next available font or the default. */
+        /* You may need to embed these fonts using @font-face rule if you have the font files. */
+        .footer .made-with {
+            font-family: "WDXL Lubrifont TC", serif;
+            font-weight: bold; /* Make bold */
+        }
+
+         .footer .prem-name {
+            font-family: "Ancizar Serif", serif;
+            font-weight: bold; /* Make bold */
+        }
+
+
+    </style>
 </head>
 
 <body>
     <h1>I'm Your Virtual Maths Teacher</h1>
     <div class="upload-image">
         <div class="inner-upload-image">
-<input type="file" hidden>
-<img src="" alt="" id="image">
-<img src="plus.svg" alt="" id="icon">
-<span>Upload Image</span>
+            <input type="file" hidden>
+            <img src="" alt="" id="image">
+            <img src="plus.svg" alt="" id="icon">
+            <span>Upload Image</span>
         </div>
         <button>
             Answer
@@ -27,214 +201,165 @@
 
         </pre>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Footer added here -->
+    <div class="footer">
+        <!-- Use spans with classes for specific font styling -->
+        <span class="made-with">Made With</span>
+        <span class="heart">❤️</span>
+        <span class="prem-name">Prem</span>
+    </div>
+
+
+    <!-- JavaScript scripts are included directly here -->
+    <script>
+        let innerUploadImage = document.querySelector(".inner-upload-image");
+        let input = innerUploadImage.querySelector("input");
+        let image = document.querySelector("#image");
+        let loading = document.querySelector("#loading");
+        let btn = document.querySelector("button");
+        let text = document.querySelector("#text");
+        let output = document.querySelector(".output");
+
+        const Api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyA5CbCupLl9e7jQXeTwmh9wu3tpM_Jdc8c"; // <-- Keep your Gemini API key here
+
+        let fileDetails = {
+            mime_type: null,
+            data: null
+        };
+
+        async function generateResponse() {
+            const RequestOption = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json "
+                },
+                body: JSON.stringify({
+                    "contents": [{
+                        "parts": [{
+                            "text": "solve the mathematical problem with proper steps of solution"
+                        }, {
+                            "inline_data": {
+                                "mime_type": fileDetails.mime_type,
+                                "data": fileDetails.data
+                            }
+                        }]
+                    }]
+                })
+            };
+
+            try {
+                let response = await fetch(Api_url, RequestOption);
+                let data = await response.json();
+                // Check if response is valid before processing
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
+                    let apiResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+                    text.innerHTML = apiResponse;
+                    output.style.display = "block";
+                } else {
+                    // Handle cases where API response is unexpected
+                    text.innerHTML = "Error: Could not get a valid response from the API. Please try again.";
+                    output.style.display = "block";
+                    console.error("Unexpected API response structure:", data);
+                }
+
+            } catch (e) {
+                console.error("Error fetching API response:", e);
+                text.innerHTML = "An error occurred while processing your request.";
+                output.style.display = "block";
+            } finally {
+                loading.style.display = "none";
+            }
+        }
+
+        // This function was added in your original code but not used. Keeping it for now.
+        // If you don't need it, you can remove it.
+        async function fetchYoutubeVideo(query) {
+            const apiKey = "YOUR_YOUTUBE_API_KEY"; // <- Replace with your actual YouTube API Key if needed
+            const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(query)}&key=${apiKey}`;
+
+            try {
+                const response = await fetch(searchUrl);
+                const data = await response.json();
+                if (data.items && data.items.length > 0) {
+                    const videoId = data.items[0].id.videoId;
+                    const videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                    // Assuming you have elements with ids #video and .video-container
+                    const videoElement = document.querySelector("#video");
+                    const videoContainer = document.querySelector(".video-container");
+                    if (videoElement && videoContainer) {
+                        videoElement.src = videoUrl;
+                        videoContainer.style.display = "block";
+                    } else {
+                        console.warn("Video elements not found in DOM.");
+                    }
+                } else {
+                    console.warn("No YouTube video found for the query:", query);
+                }
+            } catch (error) {
+                console.error("Error fetching YouTube video:", error);
+            }
+        }
+
+        input.addEventListener("change", () => {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Check file type (optional but recommended for image input)
+            if (!file.type.startsWith('image/')) {
+                alert("Please upload an image file.");
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                let base64data = e.target.result.split(",")[1];
+                fileDetails.mime_type = file.type;
+                fileDetails.data = base64data;
+
+                innerUploadImage.querySelector("span").style.display = "none";
+                innerUploadImage.querySelector("#icon").style.display = "none";
+                image.style.display = "block";
+                image.src = `data:${fileDetails.mime_type};base64,${fileDetails.data}`;
+                output.style.display = "none"; // Hide previous output
+                text.innerHTML = ""; // Clear previous text
+            };
+
+            reader.onerror = (error) => {
+                console.error("FileReader error:", error);
+                alert("Could not read the file.");
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        btn.addEventListener("click", () => {
+            if (!fileDetails.data) {
+                alert("Please upload an image first.");
+                return;
+            }
+            loading.style.display = "block";
+            output.style.display = "none"; // Hide previous output while loading
+            text.innerHTML = ""; // Clear previous text
+            generateResponse();
+        });
+
+        innerUploadImage.addEventListener("click", () => {
+            input.click();
+        });
+    </script>
+    <!-- External advertising scripts -->
+    <script type="text/javascript">
+        atOptions = {
+            'key': '4a31d7ebe6b9d7bdbd025d007429345b',
+            'format': 'iframe',
+            'height': 50,
+            'width': 320,
+            'params': {}
+        };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/4a31d7ebe6b9d7bdbd025d007429345b/invoke.js"></script>
+    <script type='text/javascript' src='//pl26664151.profitableratecpm.com/8e/5e/a4/8e5ea470df5ab7f2053469535ab170fe.js'></script>
 </body>
 
-</html><style>*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-body{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(27, 33, 39);
-    display: flex;
-    justify-content:start;
-    align-items: center;
-    flex-direction: column;
-    gap:20px;
-    padding: 20px;
-}
-h1{
-    font-size: 4vmax;
-    background: linear-gradient(to right,white,rgb(9, 192, 216),rgb(215, 12, 94));
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-}
-.upload-image{
- max-width: 600px;
- width:90%;
- height: 300px;
- background-color: rgb(66, 76, 86);
- border-radius: 50px;
- box-shadow: 2px 2px 10px black;
- display: flex;
- padding: 20px;
- align-items: center;
- justify-content: center;
- gap: 20px;
- flex-direction: column;
- border-radius: 50px;
- box-shadow: 2px 2px 10px black;
-}
-.inner-upload-image{
-    width: 100%;
-    height: 80%;
-    background-color: rgb(21, 26, 32);
-    border-radius: 50px;
-    box-shadow: 2px 2px 10px black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap:20px;
-    color: white;
-    font-size: 20px;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-.inner-upload-image:hover{
-    box-shadow:inset 2px 2px 10px black;
-    background-color: rgb(42, 51, 62);
-}
-button{
-    background-color: black;
-    padding: 10px 20px;
-    font-size: 20px;
-    border: none;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-}
-#image{
-    width: 100%;
-    height: 100%;
-    display: none;
-    border-radius: 50px;
-}
-.output{
-    width: 90%;
-    max-width: 80%;
-    background-color: rgb(2, 3, 3);
-    color:white;
-    box-shadow: 2px 2px 10px black;
-    border-radius: 20px;
-    display:none;
-    padding: 20px;
-    font-size: 20px;
-    overflow: auto;
-}
-#text{
-    width: 100%;
-    height: 100%;
-}
-#loading{
-    margin-top: 30px;
-    filter:drop-shadow(2px 2px 10px black);
-    display:none
-}</style><script>let innerUploadImage=document.querySelector(".inner-upload-image")
-let input=innerUploadImage.querySelector("input");
-let image=document.querySelector("#image")
-let loading=document.querySelector("#loading")
-let btn=document.querySelector("button")
-let text=document.querySelector("#text")
-let output=document.querySelector(".output")
-
-const Api_url="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyA5CbCupLl9e7jQXeTwmh9wu3tpM_Jdc8c"
-
-let fileDetails={
-    mime_type:null,
-    data:null
-}
-async function generateResponse() {
- const RequestOption={
-    method:"POST",
-    headers:{"Content-Type": "application/json "},
-    body:JSON.stringify({
-        "contents": [{
-        "parts":[
-            {"text": "solve the mathematical problem with proper steps of solution"},
-            {
-              "inline_data": {
-                "mime_type":fileDetails.mime_type,
-                "data": fileDetails.data
-              }
-            }
-        ]
-        }]
-    })
- }
-
-try{
-    let response=await fetch(Api_url,RequestOption)
-    let data=await response.json()
-    let apiResponse=data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim()
-    
-   text.innerHTML=apiResponse
-   output.style.display="block"
-}
-catch(e){
-console.log(e)
-}
-finally{
-    loading.style.display="none"
-}
-}
-    async function fetchYoutubeVideo(query) {
-      const apiKey = "AIzaSyAfLxpSV_trCyQ3GKpuQLRFrrJ1Rv61lQwKEY"; // <- यहां अपनी YouTube API Key लगाएं
-      const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(query)}&key=${apiKey}`;
-
-      try {
-        const response = await fetch(searchUrl);
-        const data = await response.json();
-        const videoId = data.items[0].id.videoId;
-        const videoUrl = `https://www.youtube.com/embed/${videoId}`;
-        document.querySelector("#video").src = videoUrl;
-        document.querySelector(".video-container").style.display = "block";
-      } catch (error) {
-        console.error("Video not found", error);
-      }
-    }
-
-input.addEventListener("change",()=>{
-   const file=input.files[0]
-if(!file)return
-let reader=new FileReader()
-reader.onload=(e)=>{  
-    let base64data=e.target.result.split(",")[1]
-fileDetails.mime_type=file.type;
-fileDetails.data=base64data
-
-innerUploadImage.querySelector("span").style.display="none"
-innerUploadImage.querySelector("#icon").style.display="none"
-image.style.display="block"
-image.src=`data:${fileDetails.mime_type};base64,${fileDetails.data}`
-output.style.display="none"
-}
-
-
-   
- reader.readAsDataURL(file)   
-})
-
-btn.addEventListener("click",()=>{
-    loading.style.display="block"
-    generateResponse()
-})
-
-
-
-
-
-
-
-
-innerUploadImage.addEventListener("click",()=>{
-    input.click()
-})
-
-</script>
-<script type="text/javascript">
-	atOptions = {
-		'key' : '4a31d7ebe6b9d7bdbd025d007429345b',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/4a31d7ebe6b9d7bdbd025d007429345b/invoke.js"></script>
-<script type='text/javascript' src='//pl26664151.profitableratecpm.com/8e/5e/a4/8e5ea470df5ab7f2053469535ab170fe.js'></script>
+</html>
